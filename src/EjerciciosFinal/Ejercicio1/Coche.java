@@ -14,6 +14,10 @@ public class Coche implements Runnable {
         this.transbordador = t;
         this.id = nombre;
     }
+    
+    public String getID(){
+        return this.id;
+    }
 
     @Override
     public void run() {
