@@ -46,7 +46,7 @@ public class Transbordador implements Runnable {
 
             if (cantSubidos == CANTMAXIMA) {
                 ladoDerecho.release();
-                System.out.println("ENTRO");
+              //  System.out.println("ENTRO");
             } else {
                 cargando.release(); //Si el Transbordador esta lleno no pueden subir mas autos
             }

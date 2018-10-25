@@ -50,6 +50,7 @@ public class Barberia {
 
         } else {
             try {
+                System.out.println(nombre+" esta esperando ser atendidos");
                 this.wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Barberia.class.getName()).log(Level.SEVERE, null, ex);

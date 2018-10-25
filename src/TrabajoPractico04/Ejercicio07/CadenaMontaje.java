@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package TrabajoPractico04.Ejercicio07;
 
 import static java.lang.Thread.sleep;
@@ -10,10 +5,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Matthew
- */
 public class CadenaMontaje {
 
     private int cantidadColocadores;
@@ -37,7 +28,7 @@ public class CadenaMontaje {
 
         while (encontrar(tipoProd) == -1) {
             try {
-                System.out.println("El Empaquetador "+id+" no encontro un producto de su tipo, esperando...");
+                System.out.println("El Empaquetador " + id + " no encontro un producto de su tipo, esperando...");
                 wait();
             } catch (InterruptedException ex) {
                 Logger.getLogger(CadenaMontaje.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,12 +66,12 @@ public class CadenaMontaje {
         }
         int encontrado = encontrarHueco();
 
-        int nuevoProducto = new Random().nextInt(this.cantidadColocadores) +1;
+        int nuevoProducto = new Random().nextInt(this.cantidadColocadores) + 1;
 
         System.out.println("El colocador encontro un hueco en la posicion " + encontrado + " y coloco un producto de tipo " + nuevoProducto);
 
         this.cadena[encontrado] = nuevoProducto;
-        
+
         try {
             sleep(1000);
         } catch (InterruptedException ex) {
@@ -93,7 +84,7 @@ public class CadenaMontaje {
 
     }
 
-    private  void showCadena() {
+    private void showCadena() {
         System.out.println("");
         System.out.print(" [ ");
         for (int i = 0; i < this.cantElementos; i++) {
@@ -104,7 +95,7 @@ public class CadenaMontaje {
         System.out.println("");
     }
 
-    private  int encontrarHueco() {
+    private int encontrarHueco() {
         int i = 0;
         boolean encontrado = false;
         while (i < this.cantElementos && !encontrado) {
@@ -127,9 +118,7 @@ public class CadenaMontaje {
             i++;
 
         }
-
         return lleno;
-
     }
 
     private int encontrar(int tipo) {
@@ -147,7 +136,6 @@ public class CadenaMontaje {
         if (encontrado) {
             posicion = i;
         }
-
         return posicion;
     }
 
