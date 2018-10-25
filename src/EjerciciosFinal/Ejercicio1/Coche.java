@@ -14,30 +14,15 @@ public class Coche implements Runnable {
         this.transbordador = t;
         this.id = nombre;
     }
-    
-    public String getID(){
+
+    public String getID() {
         return this.id;
     }
 
     @Override
     public void run() {
+        transbordador.subir(this.id);
+        transbordador.bajar(this.id);
+    }
 
-        transbordador.subir(this);
-        
-        //bajar();
-    }
-    
-    private void subir(){
-        try {
-            
-            this.estaSubiendo.acquire(); 
-            System.out.println(">>> El coche: "+this.id+" esta subiendo al transbordador");
-            
-            this.estaSubiendo.release();
-            
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Coche.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
 }

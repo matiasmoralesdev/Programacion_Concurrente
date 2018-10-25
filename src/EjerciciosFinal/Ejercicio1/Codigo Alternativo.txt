@@ -1,0 +1,73 @@
+-------------------------------------------------------------------------------------------------------------------------------------
+    private Lock lock = new ReentrantLock();
+    private final Condition noEstaLleno = lock.newCondition();
+    private final Condition estaLleno = lock.newCondition();
+    private final Condition estaVacio = lock.newCondition();
+
+    
+    //Sube de a un auto por vez al transbordador
+    public void subir(Coche auto) {
+        try {
+            lock.lock();
+            while (cantSubidos >= CANTMAXIMA) {
+                estaLleno.await();
+            }
+            espacio[cantSubidos] = auto;
+            cantSubidos++;
+            System.out.println(">>> El coche: " + auto.getID() + " esta subiendo al transbordador");
+            if (cantSubidos == CANTMAXIMA) {
+                noEstaLleno.signal();
+            }
+            lock.unlock();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Transbordador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //El auto baja del transbordador
+    public void bajar(Coche auto) {
+        try {
+            lock.lock();
+            while (cantSubidos == 0) {
+                noEstaLleno.await();
+            }
+            // espacio[cantSubidos]
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Transbordador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void ir() {
+        try {
+            lock.lock();
+            while (cantSubidos < CANTMAXIMA) {
+                System.out.println("Esta intentando ir pero todavia tiene espacio vacio");
+                noEstaLleno.await();
+            }
+            lock.unlock();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Transbordador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void volver() {
+        lock.lock();
+    }
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+    /*
+    private void subir() {
+        try {
+
+            this.estaSubiendo.acquire();
+            System.out.println(">>> El coche: " + this.id + " esta subiendo al transbordador");
+
+            this.estaSubiendo.release();
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Coche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     */
