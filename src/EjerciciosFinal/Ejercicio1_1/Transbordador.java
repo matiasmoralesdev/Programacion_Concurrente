@@ -1,4 +1,4 @@
-package EjerciciosFinal.Ejercicio1;
+package EjerciciosFinal.Ejercicio1_1;
 
 import static java.lang.Thread.sleep;
 import java.util.concurrent.Semaphore;

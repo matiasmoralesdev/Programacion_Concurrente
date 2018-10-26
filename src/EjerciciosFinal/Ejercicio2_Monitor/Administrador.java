@@ -1,4 +1,4 @@
-package EjerciciosFinal.Ejercicio2;
+package EjerciciosFinal.Ejercicio2_Monitor;
 
 public class Administrador implements Runnable{
 

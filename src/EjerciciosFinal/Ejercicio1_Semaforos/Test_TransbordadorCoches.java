@@ -1,4 +1,4 @@
-package EjerciciosFinal.Ejercicio1;
+package EjerciciosFinal.Ejercicio1_Semaforos;
 
 public class Test_TransbordadorCoches {
 
