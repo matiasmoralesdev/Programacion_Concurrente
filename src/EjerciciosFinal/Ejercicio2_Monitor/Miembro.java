@@ -22,20 +22,19 @@ public class Miembro implements Runnable {
             almacen.entrar(nombre);
             //sleep(300);
             while (true) {
-
                 almacen.tomarIngredientes(nombre);
                 //sleep(300);
                 almacen.mezclarVino(nombre);
                 almacen.fermentar(nombre);
-                //System.out.println(nombre + ": ◄ ◄ ◄ Esperando 4 semanas  ► ► ► ");
                 almacen.salir(nombre);
                 sleep(4000);
                 almacen.entrar(nombre);
-                //System.out.println(nombre + ": ► ► ► Vuelve de 4 semanas de reposo ◄ ◄ ◄");
                 almacen.decantarVino(nombre);
-                // sleep(300);
+                sleep(300);
+                almacen.darAProbar(nombre);
+                sleep(1000);
                 almacen.terminar(nombre);
-                //sleep(300);
+                sleep(400);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Miembro.class.getName()).log(Level.SEVERE, null, ex);
