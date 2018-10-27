@@ -4,8 +4,8 @@ public class TestClub {
 
     public static void main(String[] args) {
 
-        //String[] nombres = {"Alberto", "Belen", "Carlos", "Daniel", "Esteban", "Fernanda", "Gabriela", "Horacio", "Ivon", "Javier"};
-        String[] nombres = {"Alberto", "Belen", "Carlos", "Daniel", "Esteban"};
+        String[] nombres = {"Alberto", "Belen", "Carlos", "Daniel", "Esteban", "Fernanda", "Gabriela", "Horacio", "Ivon", "Javier"};
+        //String[] nombres = {"Alberto", "Belen", "Carlos", "Daniel", "Esteban"};
         int cantidad = nombres.length;
         Miembro[] miembros = new Miembro[cantidad]; //Arreglo de miebros
         Almacen almacen = new Almacen();

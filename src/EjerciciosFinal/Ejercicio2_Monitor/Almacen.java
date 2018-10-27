@@ -21,7 +21,7 @@ public class Almacen {
     public synchronized void entrar(String miembro) {
         try {
             System.out.println("\u001B[34m► ►  El miembro " + miembro + " esta entrando en el almacen ► ►");
-            sleep(500);
+            sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -30,8 +30,7 @@ public class Almacen {
     public synchronized void salir(String miembro) {
         try {
             System.out.println("\u001B[31m◄ ◄   El miembro " + miembro + " esta saliendo del almacen por 4 meses ◄ ◄ ");
-            //cantMiembros--;
-            sleep(500);
+            sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -40,12 +39,10 @@ public class Almacen {
     public synchronized void tomarIngredientes(String miembro) {
         try {
             //Mientras no haya jarras disponibles espera
-
             while (jarras < 2) {
-                //test(miembro);
                 if (testearVino) {
                     System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
-                    sleep(200);
+                    sleep(300);
                     wait();
                 }
                 System.out.println(miembro + ": NO HAY JARRAS DISPONIBLES " + testearVino);
@@ -57,10 +54,6 @@ public class Almacen {
                 System.out.println(miembro + "NO HAY INGREDIENTES SUFICIENTES - SE AVISARA AL ADMINISTRADOR");
                 notifyAll();
                 wait();
-                if (testearVino) {
-                    System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
-                    wait();
-                }
             }
             //El miembro toma 2 jarras, 2 envases de 5 litros de jugo (10 litros)
             jarras = jarras - 2;    //Toma 2 jarras
@@ -68,25 +61,14 @@ public class Almacen {
             paqLevadura = paqLevadura - 1;  //Toma un paquete de levadura
             System.out.println("<--" + miembro + " esta tomando los ingredientes -->");
             System.out.println("| JARRAS RESTANTES:" + jarras + " | ENVASES RESTANTES: " + envase5 + " | PAQUETES DE LEVADURA RESTANTES: " + paqLevadura);
-            sleep(500);
+            sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public synchronized void test(String miembro) {
-        if (testearVino) {
-            try {
-                System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
     //Retorna false si no hay minimo 2 envases de jugo o 1 paquete de levadura
-    public synchronized boolean ingredientesSuficientes() {
+    private synchronized boolean ingredientesSuficientes() {
         return (envase5 >= 2 && paqLevadura >= 1);
     }
 
@@ -117,16 +99,19 @@ public class Almacen {
             //jarras++; //Como ya no usa mas una de las jarras que tomo, la libera
             //Mientras no haya unidades de fermentacion disponible, espera
             while (uniFermentacion == 0) {
+
+                System.out.println(miembro + " NO HAY UNIDADES DE FERMENTACION DISPONIBLE");
+                wait();
                 if (testearVino) {
                     System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
                     wait();
                 }
-                System.out.println(miembro + " NO HAY UNIDADES DE FERMENTACION DISPONIBLE");
-                wait();
             }
             uniFermentacion--;
             System.out.println("###" + miembro + " Esta FERMENTANDO el vino");
-            sleep(500);
+            notifyAll();
+            sleep(300);
+
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,7 +122,7 @@ public class Almacen {
         try {
             uniFermentacion++;
             System.out.println("↓↓↓↓↓↓↓↓ " + miembro + " esta Decantando ↓↓↓↓↓↓↓↓ ");
-            sleep(1000);
+            sleep(300);
             notifyAll();
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
@@ -156,16 +141,16 @@ public class Almacen {
                 wait();
 
             }
-
             System.out.println("\033[32m██████████████████████████████████████");
             System.out.println("\033[32m█      FELICITACIONES: " + miembro + " HA TERMINADO SU VINO       █");
             System.out.println("\033[32m██████████████████████████████████████");
-            sleep(2000);
+            sleep(300);
+
             testearVino = true;
             miembroVino = miembro;
             //sleep(500);
-            System.out.println(testearVino);
-            notifyAll();
+            //System.out.println(testearVino);
+            //notifyAll();
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,16 +158,14 @@ public class Almacen {
 
     public synchronized void terminar(String miembro) {
         try {
-
-            notifyAll();
-            sleep(4000);
+            //notifyAll();
+            sleep(1);
             jarras += 2; //Devuelve las 2 jarras que tomo para que otro pueda usarlas
             System.out.println("◊ ◊ ◊  " + miembro + " Se prepara nuevamente para hacer mas vino ◊ ◊ ◊");
-            if (testearVino) {
-                miembroVino = "";
-                testearVino = false;
 
-            }
+            miembroVino = "";
+            testearVino = false;
+
             notifyAll();
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
@@ -200,11 +183,10 @@ public class Almacen {
             if (paqLevadura < 1) {
                 paqLevadura += 20;
             }
-
             if (envase5 < 2) {
                 envase5 += 15;
             }
-            sleep(500);
+            //sleep(500);
             notifyAll();
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
