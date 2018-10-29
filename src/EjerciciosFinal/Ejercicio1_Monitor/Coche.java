@@ -1,4 +1,4 @@
-package EjerciciosFinal.Ejercicio1_1;
+package EjerciciosFinal.Ejercicio1_Monitor;
 
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;

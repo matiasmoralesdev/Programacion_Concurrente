@@ -10,14 +10,24 @@ de jugo de fruta azucarado, y 20 paquetes de levadura de vino (que alcanzan para
  */
 public class Almacen {
 
-    private int estacionesDeMezcla = 2;
-    private int jarras = 6;
-    private int uniFermentacion = 7;
-    private int envase5 = 15;
-    private int paqLevadura = 20; //cada paquete alcanza para preparar 10 litros de vino
-    private boolean testearVino = false;
-    private String miembroVino = "";
+    private int estacionesDeMezcla;
+    private int jarras;
+    private int uniFermentacion;
+    private int envase5;
+    private int paqLevadura; //cada paquete alcanza para preparar 10 litros de vino
+    private boolean testearVino;
+    private String miembroVino;
 
+    public Almacen() {
+        estacionesDeMezcla = 2;
+        jarras = 6;
+        uniFermentacion = 7;
+        envase5 = 15;
+        paqLevadura = 20;
+        testearVino = false;
+        miembroVino = "";
+    }
+    //Una sola persona puede entrar por la puerta 
     public synchronized void entrar(String miembro) {
         try {
             System.out.println("\u001B[34m► ►  El miembro " + miembro + " esta entrando en el almacen ► ►");
@@ -26,7 +36,7 @@ public class Almacen {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    //Una sola persona puede salir por la puerta
     public synchronized void salir(String miembro) {
         try {
             System.out.println("\u001B[31m◄ ◄   El miembro " + miembro + " esta saliendo del almacen por 4 meses ◄ ◄ ");
@@ -36,6 +46,9 @@ public class Almacen {
         }
     }
 
+    
+    //Toma los ingredientes necesarios disponibles, si no hay jarras espera a que se desocupen
+    //Si no hay ingredientes notifica al Administrador
     public synchronized void tomarIngredientes(String miembro) {
         try {
             //Mientras no haya jarras disponibles espera
@@ -45,14 +58,14 @@ public class Almacen {
                     sleep(300);
                     wait();
                 }
-                System.out.println(miembro + ": NO HAY JARRAS DISPONIBLES " + testearVino);
+                //System.out.println(miembro + ": NO HAY JARRAS DISPONIBLES "); //Debug
                 wait();
 
             }
             //Mientras no haya suficientes ingredientes despierta al Administrador para que los reponga
             while (!ingredientesSuficientes()) {
-                System.out.println(miembro + "NO HAY INGREDIENTES SUFICIENTES - SE AVISARA AL ADMINISTRADOR");
-                notifyAll();
+                System.out.println(miembro + "NO HAY INGREDIENTES SUFICIENTES - SE AVISARA AL ADMINISTRADOR"); //Debug
+                notifyAll(); //Notifica al administrador que reponga ingredientes y vuelve a esperar 
                 wait();
             }
             //El miembro toma 2 jarras, 2 envases de 5 litros de jugo (10 litros)
@@ -77,7 +90,7 @@ public class Almacen {
         try {
             //Mientras no haya estaciones de mezcla disponibles, espera
             while (estacionesDeMezcla == 0) {
-                System.out.println("NO HAY ESTACIONES DE MEZCLA DISPONIBLES.....ESPERANDO QUE SE DESOCUPEN");
+                //System.out.println("NO HAY ESTACIONES DE MEZCLA DISPONIBLES.....ESPERANDO QUE SE DESOCUPEN");
                 wait();
                 if (testearVino) {
                     System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
@@ -100,7 +113,7 @@ public class Almacen {
             //Mientras no haya unidades de fermentacion disponible, espera
             while (uniFermentacion == 0) {
 
-                System.out.println(miembro + " NO HAY UNIDADES DE FERMENTACION DISPONIBLE");
+                // System.out.println(miembro + " NO HAY UNIDADES DE FERMENTACION DISPONIBLE");
                 wait();
                 if (testearVino) {
                     System.out.println("\u001B[35m ♥ ♥ ♥ " + miembro + " esta probando el vino de " + miembroVino + " ♥ ♥ ♥");
@@ -148,17 +161,17 @@ public class Almacen {
 
             testearVino = true;
             miembroVino = miembro;
-            //sleep(500);
-            //System.out.println(testearVino);
-            //notifyAll();
         } catch (InterruptedException ex) {
             Logger.getLogger(Almacen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    //Despues de terminar el vino todos los que esten esperando (ya sea porque no hay jarras, estaciones de mezcla
+    //o fermentadores ) se despertaran, probaran el vino y volveran a esperar, aquellos miembros que se hayan ido
+    //por 4 meses se los esperara un tiempo y si no entran al almacen no lo probaran y el el miebro que hizo el vino
+    //devolvera las jarras y se pondra a hacer otro vino, tampoco probara el vino aquel que este realizando alguna accion
+    //y no este en estado de espera
     public synchronized void terminar(String miembro) {
         try {
-            //notifyAll();
             sleep(1);
             jarras += 2; //Devuelve las 2 jarras que tomo para que otro pueda usarlas
             System.out.println("◊ ◊ ◊  " + miembro + " Se prepara nuevamente para hacer mas vino ◊ ◊ ◊");

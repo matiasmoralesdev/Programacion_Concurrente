@@ -1,4 +1,4 @@
-package EjerciciosFinal.Ejercicio1_1;
+package EjerciciosFinal.Ejercicio1_Monitor;
 
 public class Test_TransbordadorCoches {
 
@@ -6,7 +6,7 @@ public class Test_TransbordadorCoches {
 
         int CANTCOCHES = 100;    //Cantidad de Coches totales
         Transbordador transbordador = new Transbordador();  //Crea un transbordador
-        Thread hiloTransbordador = new Thread(transbordador);   //Crea el hilo Runnable de transbordador
+        Thread hiloTransbordador = new Thread(new Barco(transbordador));   //Crea el hilo Runnable de transbordador
         Thread[] coleccionDeHilos = new Thread[CANTCOCHES]; //Crea la coleccion de Hilos (autos)
 
         for (int i = 0; i < CANTCOCHES; i++) {

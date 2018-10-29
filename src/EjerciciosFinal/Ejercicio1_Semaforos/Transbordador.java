@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Transbordador implements Runnable {
+public class Transbordador {
 
     private final int CANTMAXIMA = 10;
 
@@ -21,14 +21,6 @@ public class Transbordador implements Runnable {
     public Transbordador() {
         this.espacio = new String[CANTMAXIMA];
         this.cantSubidos = 0;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            ir();
-            volver();
-        }
     }
 
     public void subir(String auto) {
@@ -91,7 +83,7 @@ public class Transbordador implements Runnable {
             Logger.getLogger(Transbordador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void volver() {
         try {
             ladoIzquierdo.acquire();
@@ -107,7 +99,8 @@ public class Transbordador implements Runnable {
             Logger.getLogger(Transbordador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    //Si esta en True viaja hacia el lado derecho a descargar los autos
+    //Si esta en false vuelve vacion
     public void viajando(boolean ir) {
         try {
             String s;
@@ -117,8 +110,6 @@ public class Transbordador implements Runnable {
                 s = "\u001B[31m◄";
             }
             int t = 250;
-            //System.out.print("VIAJANDO");
-            //sleep(t);
             for (int i = 0; i < 20; i++) {
                 System.out.print(s);
                 sleep(t);
@@ -129,14 +120,4 @@ public class Transbordador implements Runnable {
         }
 
     }
-
-    /*
-    public String mostrarCarga() {
-        String s = "A BORDO: -> | ";
-        for (int i = 0; i < CANTMAXIMA; i++) {
-            s += espacio[i] + " | ";
-        }
-        return s;
-    }
-     */
 }
